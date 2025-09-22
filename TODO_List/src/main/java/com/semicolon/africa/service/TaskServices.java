@@ -1,8 +1,8 @@
 package com.semicolon.africa.service;
 
 import com.semicolon.africa.controllers.dtos.*;
+import com.semicolon.africa.controllers.dtos.UpdateTaskResponse;
 import com.semicolon.africa.data.models.Task;
-import src.main.java.com.semicolon.africa.controllers.dtos.UpdateTaskResponse;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public interface TaskServices {
 
    FetchTasksResponse fetchTask(FetchTaskRequest requestId);
 
-  UpdateTaskResponse updateTask(UpdateTaskRequest update);
+    UpdateTaskResponse updateTask(UpdateTaskRequest update);
 
    DeleteTaskResponse deleteTask(DeleteTaskRequest deleteTask);
 

@@ -61,7 +61,7 @@ public class TaskServicesBaseTest {
     @Test
     public void testUpdateTask() {
         UpdateTaskRequest render = getUpdateTaskRequest();
-        src.main.java.com.semicolon.africa.controllers.dtos.UpdateTaskResponse response = taskServicesBase.updateTask(render);
+        UpdateTaskResponse response = taskServicesBase.updateTask(render);
         assertEquals("Task updated successfully", response.getMessage());
 
 

@@ -1,12 +1,13 @@
 package com.semicolon.africa.service;
 
 import com.semicolon.africa.controllers.dtos.*;
+import com.semicolon.africa.controllers.dtos.UpdateTaskResponse;
 import com.semicolon.africa.data.models.Task;
 import com.semicolon.africa.data.repositories.TasksRepository;
 import com.semicolon.africa.exceptions.TaskNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import src.main.java.com.semicolon.africa.controllers.dtos.UpdateTaskResponse;
+
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class TaskServicesBase implements com.semicolon.africa.service.TaskServic
     }
 
     @Override
-    public UpdateTaskResponse updateTask(UpdateTaskRequest update) {
+    public  UpdateTaskResponse updateTask(UpdateTaskRequest update) {
         Task task = tasksRepository.findTaskByTaskId(update.getId());
         if (task == null) {
             throw new TaskNotFoundException("Task with ID " + update.getId() + " not found");
@@ -63,7 +64,7 @@ public class TaskServicesBase implements com.semicolon.africa.service.TaskServic
         task.setComplete(update.isComplete());
         tasksRepository.save(task);
 
-        src.main.java.com.semicolon.africa.controllers.dtos.UpdateTaskResponse updated = new src.main.java.com.semicolon.africa.controllers.dtos.UpdateTaskResponse();
+        UpdateTaskResponse updated = new UpdateTaskResponse();
         updated.setMessage("Task updated successfully");
         updated.setTask(task);
         return updated;
