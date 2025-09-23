@@ -13,11 +13,11 @@ import java.util.List;
 
 
 @Service
-public class TaskServicesBase implements com.semicolon.africa.service.TaskServices {
+public class TaskServicesBase implements TaskServices {
     @Autowired
     private TasksRepository tasksRepository;
     @Override
-    public com.semicolon.africa.controllers.dtos.CreateTaskResponse createTask(com.semicolon.africa.controllers.dtos.CreateTaskRequest request){
+    public CreateTaskResponse createTask(CreateTaskRequest request){
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -25,7 +25,7 @@ public class TaskServicesBase implements com.semicolon.africa.service.TaskServic
         task.setDueDate(request.getDueDate());
         task.setComplete(request.isComplete());
         tasksRepository.save(task);
-        com.semicolon.africa.controllers.dtos.CreateTaskResponse create = new com.semicolon.africa.controllers.dtos.CreateTaskResponse();
+        CreateTaskResponse create = new CreateTaskResponse();
         create.setMessage("Created Task successful");
        return create;
 
@@ -36,7 +36,7 @@ public class TaskServicesBase implements com.semicolon.africa.service.TaskServic
 
 
     @Override
-    public FetchTasksResponse fetchTask(com.semicolon.africa.controllers.dtos.FetchTaskRequest requestId) {
+    public FetchTasksResponse fetchTask(FetchTaskRequest requestId) {
       Task  tasks = tasksRepository.findTaskByTaskId(requestId.getId());
       if(tasks == null) {
           throw new TaskNotFoundException("Tasks not found");
@@ -72,7 +72,7 @@ public class TaskServicesBase implements com.semicolon.africa.service.TaskServic
 
 
     @Override
-    public com.semicolon.africa.controllers.dtos.DeleteTaskResponse deleteTask(DeleteTaskRequest deleteTask) {
+    public DeleteTaskResponse deleteTask(DeleteTaskRequest deleteTask) {
         Task task = tasksRepository.findTaskByTaskId(deleteTask.getId());
     if(task == null) {
         throw new TaskNotFoundException("Task not found");

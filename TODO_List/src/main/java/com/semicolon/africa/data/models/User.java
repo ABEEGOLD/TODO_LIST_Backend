@@ -3,7 +3,7 @@ package com.semicolon.africa.data.models;
 public class User {
     private int userId;
     private String userName;
-    private String userPasswordHash;
+    private String userPassword;
 
     public String getUserName() {
         return userName;
@@ -21,12 +21,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserPasswordHash() {
-        return userPasswordHash;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setUserPasswordHash(String userPasswordHash) {
-        this.userPasswordHash = userPasswordHash;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
 

@@ -15,5 +15,9 @@ public interface TasksRepository extends JpaRepository<Task, Long> {
 
    Task readByComplete(boolean complete);
 
+   void save(Task task);
+
+
+
    //List<Task> findAll();
 }
