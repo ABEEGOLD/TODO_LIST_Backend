@@ -1,7 +1,13 @@
 package com.semicolon.africa.service;
 
-import com.semicolon.africa.controllers.dtos.*;
-import com.semicolon.africa.controllers.dtos.UpdateTaskResponse;
+import com.semicolon.africa.dtos.Request.CreateTaskRequest;
+import com.semicolon.africa.dtos.Request.DeleteTaskRequest;
+import com.semicolon.africa.dtos.Request.FetchTaskRequest;
+import com.semicolon.africa.dtos.Request.UpdateTaskRequest;
+import com.semicolon.africa.dtos.Response.CreateTaskResponse;
+import com.semicolon.africa.dtos.Response.DeleteTaskResponse;
+import com.semicolon.africa.dtos.Response.FetchTasksResponse;
+import com.semicolon.africa.dtos.Response.UpdateTaskResponse;
 import com.semicolon.africa.data.models.Task;
 import com.semicolon.africa.data.repositories.TasksRepository;
 import com.semicolon.africa.exceptions.TaskNotFoundException;
@@ -37,7 +43,7 @@ public class TaskServicesBase implements TaskServices {
 
     @Override
     public FetchTasksResponse fetchTask(FetchTaskRequest requestId) {
-      Task  tasks = tasksRepository.findTaskByTaskId(requestId.getId());
+      Task  tasks = tasksRepository.findTaskByTaskId(requestId.getTaskId());
       if(tasks == null) {
           throw new TaskNotFoundException("Tasks not found");
       }

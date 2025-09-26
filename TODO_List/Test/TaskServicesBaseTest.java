@@ -1,11 +1,23 @@
 import com.semicolon.africa.Main;
-import com.semicolon.africa.controllers.dtos.*;
 
 
+import com.semicolon.africa.dtos.Request.CreateTaskRequest;
+import com.semicolon.africa.dtos.Request.DeleteTaskRequest;
+import com.semicolon.africa.dtos.Request.FetchTaskRequest;
+import com.semicolon.africa.dtos.Request.UpdateTaskRequest;
+import com.semicolon.africa.dtos.Response.CreateTaskResponse;
+import com.semicolon.africa.dtos.Response.DeleteTaskResponse;
+import com.semicolon.africa.dtos.Response.FetchTasksResponse;
+import com.semicolon.africa.dtos.Response.UpdateTaskResponse;
 import com.semicolon.africa.data.models.Task;
+import com.semicolon.africa.data.repositories.TasksRepository;
 import com.semicolon.africa.service.TaskServicesBase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
@@ -22,8 +34,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = Main.class)
 
 public class TaskServicesBaseTest {
-    @Autowired
+//    @Autowired
+//    private TaskServicesBase taskServicesBase;
+
+    @Mock
+    private TasksRepository tasksRepository;
+
+    @InjectMocks
     private TaskServicesBase taskServicesBase;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        Task task = new Task();
+        task.setTaskId(1L);
+        task.setTitle("Sample Task");
+        Mockito.when(tasksRepository.findTaskByTaskId(1L)).thenReturn(task);
+    }
+
 
 
     @Test
@@ -53,7 +81,7 @@ public class TaskServicesBaseTest {
     @Test
     public void testFetchTask() {
         FetchTaskRequest render = new FetchTaskRequest();
-        render.setId(2);
+        render.setTaskId(1L);
         FetchTasksResponse response = taskServicesBase.fetchTask(render);
         assertEquals("Fetching Task successful", response.getMessage());
     }
@@ -69,7 +97,7 @@ public class TaskServicesBaseTest {
 
     public UpdateTaskRequest getUpdateTaskRequest() {
         UpdateTaskRequest request = new UpdateTaskRequest();
-        request.setId(2);
+        request.setId(1L);
         request.setTitle("cooking");
         request.setDescription("cooking sauce");
         request.setComplete(true);
@@ -80,7 +108,7 @@ public class TaskServicesBaseTest {
 @Test
     public void testDeleteTask() {
         DeleteTaskRequest render = new DeleteTaskRequest();
-        render.setId(1);
+        render.setId(1L);
         DeleteTaskResponse response = taskServicesBase.deleteTask(render);
         assertEquals("Deleted Task successful", response.getMessage());
     }

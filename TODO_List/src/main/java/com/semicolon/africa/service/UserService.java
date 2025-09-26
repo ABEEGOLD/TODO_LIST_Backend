@@ -1,6 +1,13 @@
 package com.semicolon.africa.service;
 
-import com.semicolon.africa.controllers.dtos.*;
+import com.semicolon.africa.dtos.Request.ChangePasswordRequest;
+import com.semicolon.africa.dtos.Request.LoginUserRequest;
+import com.semicolon.africa.dtos.Request.LogoutUserRequest;
+import com.semicolon.africa.dtos.Request.RegisterUserRequest;
+import com.semicolon.africa.dtos.Response.ChangePasswordResponse;
+import com.semicolon.africa.dtos.Response.LoginUserResponse;
+import com.semicolon.africa.dtos.Response.LogoutUserResponse;
+import com.semicolon.africa.dtos.Response.RegisterUserResponse;
 
 public interface UserService  {
 
@@ -12,7 +19,6 @@ public interface UserService  {
 
     ChangePasswordResponse changePassword(ChangePasswordRequest changePasswordRequest);
 
-    DeleteUserAccountResponse deleteUserAccount(DeleteUserAccountRequest accountDeleteRequest);
 
 
 }
