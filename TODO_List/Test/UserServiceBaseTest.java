@@ -54,7 +54,6 @@ public class UserServiceBaseTest {
     @Test
     public void testCan_loginUser() {
         LoginUserRequest request = new LoginUserRequest();
-        request.setUserId(1L);
         request.setUserName("OFA");
         request.setUserPassword("someHashedPassword");
         LoginUserResponse Response = userService.loginUser(request);
@@ -66,7 +65,6 @@ public class UserServiceBaseTest {
         User user = new User();
         userRepository.save(user);
         LogoutUserRequest out = new LogoutUserRequest();
-        out.setUserId(user.getUserId());
         out.setUserPasswordHash("someHashedPassword");
         LogoutUserResponse response = userService.logoutUser(out);
         assertEquals("Logout Successful", response.getMessage());
@@ -82,7 +80,7 @@ public class UserServiceBaseTest {
             userRepository.save(user);
 
             ChangePasswordRequest request = new ChangePasswordRequest();
-            request.setUserId(user.getUserId());
+            request.setUserName("Test User");
             request.setOldPassword("wrongPassword");
             request.setNewPassword("NewPassword444");
 

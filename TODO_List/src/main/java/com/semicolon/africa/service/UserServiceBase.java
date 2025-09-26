@@ -15,20 +15,25 @@ import com.semicolon.africa.exceptions.OldPasswordIncorrectException;
 import com.semicolon.africa.exceptions.UserOldPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceBase implements UserService {
    @Autowired
     private UserRepository userRepository;
-   private User user;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  //  private User user;
 
    @Override
    public RegisterUserResponse registerUser(RegisterUserRequest userRequest){
        User user = new User();
        user.setUserId(userRequest.getUserId());
        user.setName(userRequest.getName());
-       user.setUserPasswordHash(userRequest.getUserPasswordHash());
+
+       String hashedPassword = passwordEncoder.encode(userRequest.getUserPasswordHash());
+       user.setUserPasswordHash(hashedPassword);
+
        userRepository.save(user);
        RegisterUserResponse registerResponse = new RegisterUserResponse();
        registerResponse.setMessage("Registered User Successful");
@@ -37,12 +42,24 @@ public class UserServiceBase implements UserService {
 
     @Override
     public LoginUserResponse loginUser(LoginUserRequest loginRequest){
-        User user = userRepository.findUserByUserId(loginRequest.getUserId());
+//        System.out.println("This is the request data"+ loginRequest);
+        User user = userRepository.findUserByName(loginRequest.getUserName());
+//        System.out.println("This is the user"+user.toString());
         if(user == null){
             throw  new LoginUserNotAvaiableException("User not found");
         }
-        userRepository.save(user);
 
+        boolean passwordMatches = passwordEncoder.matches(
+                loginRequest.getUserPassword(),
+                user.getUserPasswordHash()
+        );
+
+        if (!passwordMatches) {
+            throw new RuntimeException("Invalid password");
+        }
+
+
+//        System.out.println("This is the password "+passwordMatches);
         LoginUserResponse loginResponse = new LoginUserResponse();
         loginResponse.setMessage("Login Successful");
         return loginResponse;
@@ -52,9 +69,7 @@ public class UserServiceBase implements UserService {
     @Override
     public LogoutUserResponse logoutUser(LogoutUserRequest logoutRequest){
         User user = new User();
-        user.setUserId(logoutRequest.getUserId());
         user.setUserPasswordHash(logoutRequest.getUserPasswordHash());
-        userRepository.save(user);
         LogoutUserResponse logoutResponse = new LogoutUserResponse();
         logoutResponse.setMessage("Logout Successful");
         return logoutResponse;
@@ -63,13 +78,12 @@ public class UserServiceBase implements UserService {
 
     @Override
     public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
-        if (request.getUserId() == null ||
-                request.getOldPassword() == null ||
+       if(request.getOldPassword() == null ||
                 request.getNewPassword() == null) {
-            throw new IllegalArgumentException("User ID, old password, and new password must not be null");
+            throw new IllegalArgumentException("old password, and new password must not be null");
         }
 
-        User user = userRepository.findUserByUserId(request.getUserId());
+        User user = userRepository.findUserByName(request.getUserName());
         if (user == null) {
             throw new UserOldPasswordException("User not found");
         }
@@ -83,7 +97,6 @@ public class UserServiceBase implements UserService {
 
         String newHashedPassword = BCrypt.hashpw(request.getNewPassword(), BCrypt.gensalt());
         user.setUserPasswordHash(newHashedPassword);
-        userRepository.save(user);
 
         ChangePasswordResponse response = new ChangePasswordResponse();
         response.setMessage("Password changed successfully");
