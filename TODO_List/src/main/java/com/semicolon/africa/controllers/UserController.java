@@ -16,14 +16,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5500/todoRegister.html/todoLogin.html")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
+    @CrossOrigin("*")
     @PostMapping("/register")
-    public ResponseEntity<RegisterUserResponse> registerUser(@RequestBody RegisterUserRequest registerUserRequest) {
+    public ResponseEntity<RegisterUserResponse> registerUser( @RequestBody RegisterUserRequest registerUserRequest) {
         return ResponseEntity.ok(userService.registerUser(registerUserRequest));
     }
 

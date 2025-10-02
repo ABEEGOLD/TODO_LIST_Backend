@@ -16,9 +16,9 @@ public interface TaskServices {
 
    CreateTaskResponse createTask(CreateTaskRequest request);
 
-   FetchTasksResponse fetchTask(FetchTaskRequest requestId);
+   FetchTasksResponse fetchTask(FetchTaskRequest request);
 
-    UpdateTaskResponse updateTask(UpdateTaskRequest update);
+   UpdateTaskResponse updateTask(UpdateTaskRequest update);
 
    DeleteTaskResponse deleteTask(DeleteTaskRequest deleteTask);
 

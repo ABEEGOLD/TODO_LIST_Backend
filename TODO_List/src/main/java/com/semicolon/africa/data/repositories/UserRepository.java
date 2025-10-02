@@ -15,5 +15,4 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User findUserByName(String name);
 
-    User findUserByUserPasswordHash(String userPasswordHash, Sort sort);
 }

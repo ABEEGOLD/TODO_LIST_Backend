@@ -48,7 +48,7 @@ public class UserServiceBaseTest {
         RegisterUserRequest request = new RegisterUserRequest();
         request.setUserId(1L);
         request.setName("OFA");
-        request.setUserPasswordHash("someHashedPassword");
+        request.setPassword("someHashedPassword");
         return request;
     }
     @Test
@@ -76,7 +76,7 @@ public class UserServiceBaseTest {
     public void testCan_changePassword() {
             User user = new User();
             user.setName("Test User");
-            user.setUserPasswordHash(BCrypt.hashpw("secret123", BCrypt.gensalt()));
+            user.setPassword(BCrypt.hashpw("secret123", BCrypt.gensalt()));
             userRepository.save(user);
 
             ChangePasswordRequest request = new ChangePasswordRequest();

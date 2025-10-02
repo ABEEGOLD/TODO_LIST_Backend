@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FindAllTaskRequest {
-    private Long id;
+//    private Long id;
+    private String title;
 }

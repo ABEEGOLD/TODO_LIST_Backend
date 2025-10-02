@@ -9,7 +9,7 @@ public class RegisterUserRequest {
 
     private Long UserId;
     private String name;
-    private String userPasswordHash;
+    private String password;
 
 }
 

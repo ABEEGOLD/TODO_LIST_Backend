@@ -16,14 +16,17 @@ import com.semicolon.africa.exceptions.UserOldPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceBase implements UserService {
    @Autowired
     private UserRepository userRepository;
+
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-  //  private User user;
+
 
    @Override
    public RegisterUserResponse registerUser(RegisterUserRequest userRequest){
@@ -31,8 +34,10 @@ public class UserServiceBase implements UserService {
        user.setUserId(userRequest.getUserId());
        user.setName(userRequest.getName());
 
-       String hashedPassword = passwordEncoder.encode(userRequest.getUserPasswordHash());
-       user.setUserPasswordHash(hashedPassword);
+       String hashedPassword = passwordEncoder.encode(userRequest.getPassword());
+       user.setPassword(hashedPassword);
+       System.out.println("Raw password: " + userRequest.getPassword());
+
 
        userRepository.save(user);
        RegisterUserResponse registerResponse = new RegisterUserResponse();
@@ -51,7 +56,7 @@ public class UserServiceBase implements UserService {
 
         boolean passwordMatches = passwordEncoder.matches(
                 loginRequest.getUserPassword(),
-                user.getUserPasswordHash()
+                user.getPassword()
         );
 
         if (!passwordMatches) {
@@ -69,7 +74,7 @@ public class UserServiceBase implements UserService {
     @Override
     public LogoutUserResponse logoutUser(LogoutUserRequest logoutRequest){
         User user = new User();
-        user.setUserPasswordHash(logoutRequest.getUserPasswordHash());
+        user.setPassword(logoutRequest.getUserPasswordHash());
         LogoutUserResponse logoutResponse = new LogoutUserResponse();
         logoutResponse.setMessage("Logout Successful");
         return logoutResponse;
@@ -87,7 +92,7 @@ public class UserServiceBase implements UserService {
         if (user == null) {
             throw new UserOldPasswordException("User not found");
         }
-        String storedHashedPassword = user.getUserPasswordHash();
+        String storedHashedPassword = user.getPassword();
         String oldPasswordFromRequest = request.getOldPassword();
 
         if (storedHashedPassword == null || !BCrypt.checkpw(oldPasswordFromRequest, storedHashedPassword)) {
@@ -96,7 +101,7 @@ public class UserServiceBase implements UserService {
 
 
         String newHashedPassword = BCrypt.hashpw(request.getNewPassword(), BCrypt.gensalt());
-        user.setUserPasswordHash(newHashedPassword);
+        user.setPassword(newHashedPassword);
 
         ChangePasswordResponse response = new ChangePasswordResponse();
         response.setMessage("Password changed successfully");
