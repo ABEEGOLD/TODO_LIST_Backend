@@ -6,7 +6,7 @@ import com.semicolon.africa.service.TaskServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://localhost:5500/todologin.html/todoHomePage.html")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/Tasks")
 public class TaskController {

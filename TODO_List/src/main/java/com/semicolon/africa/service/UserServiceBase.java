@@ -10,13 +10,12 @@ import com.semicolon.africa.dtos.Response.LogoutUserResponse;
 import com.semicolon.africa.dtos.Response.RegisterUserResponse;
 import com.semicolon.africa.data.models.User;
 import com.semicolon.africa.data.repositories.UserRepository;
-import com.semicolon.africa.exceptions.LoginUserNotAvaiableException;
+import com.semicolon.africa.exceptions.LoginUserNotAvailableException;
 import com.semicolon.africa.exceptions.OldPasswordIncorrectException;
 import com.semicolon.africa.exceptions.UserOldPasswordException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +50,7 @@ public class UserServiceBase implements UserService {
         User user = userRepository.findUserByName(loginRequest.getUserName());
 //        System.out.println("This is the user"+user.toString());
         if(user == null){
-            throw  new LoginUserNotAvaiableException("User not found");
+            throw  new LoginUserNotAvailableException("User not found");
         }
 
         boolean passwordMatches = passwordEncoder.matches(
