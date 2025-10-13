@@ -30,12 +30,12 @@ public class UserServiceBase implements UserService {
    @Override
    public RegisterUserResponse registerUser(RegisterUserRequest userRequest){
        User user = new User();
-       user.setUserId(userRequest.getUserId());
        user.setName(userRequest.getName());
+       user.setEmail(userRequest.getEmail());
+       System.out.println("This is the user id "+user.getUserId());
 
        String hashedPassword = passwordEncoder.encode(userRequest.getPassword());
        user.setPassword(hashedPassword);
-       System.out.println("Raw password: " + userRequest.getPassword());
 
 
        userRepository.save(user);
@@ -47,14 +47,14 @@ public class UserServiceBase implements UserService {
     @Override
     public LoginUserResponse loginUser(LoginUserRequest loginRequest){
 //        System.out.println("This is the request data"+ loginRequest);
-        User user = userRepository.findUserByName(loginRequest.getUserName());
-//        System.out.println("This is the user"+user.toString());
+        User user = userRepository.findUserByName(loginRequest.getUsername());
+        System.out.println("This is the user"+user.toString());
         if(user == null){
             throw  new LoginUserNotAvailableException("User not found");
         }
 
         boolean passwordMatches = passwordEncoder.matches(
-                loginRequest.getUserPassword(),
+                loginRequest.getPassword(),
                 user.getPassword()
         );
 

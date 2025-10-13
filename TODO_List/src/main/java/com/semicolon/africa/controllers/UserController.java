@@ -4,16 +4,11 @@ import com.semicolon.africa.dtos.Request.ChangePasswordRequest;
 import com.semicolon.africa.dtos.Request.LoginUserRequest;
 import com.semicolon.africa.dtos.Request.LogoutUserRequest;
 import com.semicolon.africa.dtos.Request.RegisterUserRequest;
-import com.semicolon.africa.dtos.Response.ChangePasswordResponse;
-import com.semicolon.africa.dtos.Response.LoginUserResponse;
 import com.semicolon.africa.dtos.Response.LogoutUserResponse;
 import com.semicolon.africa.dtos.Response.RegisterUserResponse;
-import com.semicolon.africa.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.semicolon.africa.service.UserServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
@@ -21,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceBase userService;
 
     @CrossOrigin("*")
     @PostMapping("/register")

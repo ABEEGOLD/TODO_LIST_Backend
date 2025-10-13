@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class LoginUserRequest {
     @Column(unique = true)
-    private String userName;
-    private String userPassword;
+    private String username;
+    private String password;
 }

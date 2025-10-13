@@ -27,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceBaseTest {
 
 
-    @Autowired
-    private UserServiceBase userService;
+
     @Autowired
     private UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -60,14 +59,15 @@ public class UserServiceBaseTest {
         RegisterUserRequest request = new RegisterUserRequest();
 //      request.setUserId(1L);
         request.setName("REY");
+        request.setEmail("rey@gmail.com");
         request.setPassword("passwordEncode");
         return request;
     }
     @Test
     public void testCan_loginUser() {
         LoginUserRequest request = new LoginUserRequest();
-        request.setUserName("REY");
-        request.setUserPassword("passwordEncode");
+        request.setUsername("REY");
+        request.setPassword("passwordEncode");
         LoginUserResponse response = userServiceBase.loginUser(request);
         assertNotNull(response);
         assertEquals("Login Successful", response.getMessage());
@@ -79,12 +79,12 @@ public class UserServiceBaseTest {
         public void testCan_loginUser_WithWrongPassword_ThrowsException() {
 
             LoginUserRequest request = new LoginUserRequest();
-            request.setUserName("test_user");
-            request.setUserPassword("wrong_password");
+            request.setUsername("test_user");
+            request.setPassword("wrong_password");
 
 
             RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-                userService.loginUser(request);
+                userServiceBase.loginUser(request);
             });
 
             assertEquals("User not found", exception.getMessage());
@@ -94,8 +94,8 @@ public class UserServiceBaseTest {
         public void testCan_loginUser_WithNonExistentUser_ThrowsException() {
 
             LoginUserRequest request = new LoginUserRequest();
-            request.setUserName("nou_ser");
-            request.setUserPassword("any");
+            request.setUsername("nou_ser");
+            request.setPassword("any");
 
 
             LoginUserNotAvailableException exception = assertThrows(LoginUserNotAvailableException.class, () -> {
@@ -122,6 +122,7 @@ public class UserServiceBaseTest {
     public void testCan_changePassword() {
             User user = new User();
             user.setName("Mike");
+            user.setEmail("mike@gmail.com");
             user.setPassword(BCrypt.hashpw("correctPassword", BCrypt.gensalt()));
             userRepository.save(user);
 

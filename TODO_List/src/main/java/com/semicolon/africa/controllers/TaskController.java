@@ -1,14 +1,18 @@
 package com.semicolon.africa.controllers;
 
+import com.semicolon.africa.data.models.Task;
 import com.semicolon.africa.dtos.Request.*;
 import com.semicolon.africa.dtos.Response.*;
 import com.semicolon.africa.service.TaskServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/Tasks")
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     @Autowired
@@ -26,7 +30,7 @@ public class TaskController {
 
 
 
-    @PutMapping("/tasks/update")
+    @PutMapping("/update")
     public ResponseEntity<UpdateTaskResponse> updateTask(
             @RequestBody UpdateTaskRequest request) {
 
@@ -40,8 +44,10 @@ public class TaskController {
         return ResponseEntity.ok(taskServicesBase.deleteTask(request));
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<?> findAllTasks(FindAllTaskRequest request){
-        return ResponseEntity.ok(taskServicesBase.findAllTasks());
+    @GetMapping("/findAllTasks")
+    public ResponseEntity<?> findAllTasks() {
+        List<Task> tasks = taskServicesBase.findAllTasks();
+        return ResponseEntity.ok(tasks);
     }
+
 }
