@@ -3,6 +3,7 @@ package com.semicolon.africa.controllers;
 import com.semicolon.africa.data.models.Task;
 import com.semicolon.africa.dtos.Request.*;
 import com.semicolon.africa.dtos.Response.*;
+import com.semicolon.africa.exceptions.TaskNotFoundException;
 import com.semicolon.africa.service.TaskServiceBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,23 @@ public class TaskController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<FetchTasksResponse> fetchTask(@RequestBody FetchTaskRequest request) {
-        return ResponseEntity.ok(taskServicesBase.fetchTask(request));
+    public ResponseEntity<?> fetchTask(@RequestBody FetchTaskRequest request) {
+        if (request.getTitle() == null || request.getTitle().isBlank()) {
+
+            List<Task> allTasks = taskServicesBase.findAllTasks();
+            return ResponseEntity.ok(allTasks);
+        }
+
+        try {
+            FetchTasksResponse response = taskServicesBase.fetchTask(request);
+            return ResponseEntity.ok(response);
+        } catch (TaskNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Unexpected error: " + e.getMessage());
+        }
     }
+
 
 
 
